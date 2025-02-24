@@ -56,4 +56,64 @@ export default class Tree {
       }
     }
   }
+
+  deleteItem(value) {
+    const target = this.find(value);
+    const targetParent = this.findParent(value);
+
+    if (!value || !target) return null;
+
+    // If the deleted node is a leaf
+    // That node is now null
+    if (!target.left && !target.right) {
+      if (targetParent.left === target) targetParent.left = null;
+      if (targetParent.right === target) targetParent.right = null;
+      return;
+    }
+
+    // If the deleted node only has one child
+    // The node is replaced by that child
+    if (target.left && !target.right) {
+      if (targetParent.left === target) targetParent.left = target.left;
+      if (targetParent.right === target) targetParent.right = target.left;
+      return;
+    } else if (!target.left && target.right) {
+      if (targetParent.left === target) targetParent.left = target.right;
+      if (targetParent.right === target) targetParent.right = target.right;
+      return;
+    }
+
+    // If the deleted node has two children
+    // We find a replacement - the next higher number
+    let replacement = target.right;
+    while (replacement.left) {
+      replacement = replacement.left;
+    }
+
+    // Delete the replacement
+    this.deleteItem(replacement.data);
+
+    // Make the value of the deleted node the same as the deleted replacement
+    target.data = replacement.data;
+  }
+
+  find(value, root = this.root) {
+    if (value === root.data) return root;
+    if (value < root.data)
+      return root.left ? this.find(value, root.left) : null;
+    if (value > root.data)
+      return root.right ? this.find(value, root.right) : null;
+  }
+
+  findParent(value, root = this.root) {
+    if (
+      (root.left && root.left.data === value) ||
+      (root.right && root.right.data === value)
+    )
+      return root;
+    if (value < root.data)
+      return root.left ? this.findParent(value, root.left) : null;
+    if (value > root.data)
+      return root.right ? this.findParent(value, root.right) : null;
+  }
 }
