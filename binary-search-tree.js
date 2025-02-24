@@ -129,4 +129,31 @@ export default class Tree {
       callback(queue.shift().data);
     }
   }
+
+  inOrder(callback, root = this.root) {
+    if (!callback) throw new Error('Callback function needed');
+
+    if (root.left) this.inOrder(callback, root.left);
+    callback(root.data);
+    if (root.right) this.inOrder(callback, root.right);
+    return;
+  }
+
+  preOrder(callback, root = this.root) {
+    if (!callback) throw new Error('Callback function needed');
+
+    callback(root.data);
+    if (root.left) this.preOrder(callback, root.left);
+    if (root.right) this.preOrder(callback, root.right);
+    return;
+  }
+
+  postOrder(callback, root = this.root) {
+    if (!callback) throw new Error('Callback function needed');
+
+    if (root.left) this.postOrder(callback, root.left);
+    if (root.right) this.postOrder(callback, root.right);
+    callback(root.data);
+    return;
+  }
 }
