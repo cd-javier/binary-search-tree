@@ -140,6 +140,7 @@ export default class Tree {
   }
 
   find(value, root = this.root) {
+    if (!root) return null
     if (value === root.data) return root;
     if (value < root.data)
       return root.left ? this.find(value, root.left) : null;
@@ -148,6 +149,7 @@ export default class Tree {
   }
 
   findParent(value, root = this.root) {
+    if (!root) return null
     if (
       (root.left && root.left.data === value) ||
       (root.right && root.right.data === value)
