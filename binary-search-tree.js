@@ -207,17 +207,14 @@ export default class Tree {
 
   height(value) {
     const target = typeof value === 'object' ? value : this.find(value);
-    let counter = 0;
 
-    if (!target) return;
-    if (!target.left && !target.right) return counter;
+    if (!target) return null;
+    if (!target.left && !target.right) return 0;
 
     const leftCounter = target.left ? this.height(target.left.data) : 0;
     const rightCounter = target.right ? this.height(target.right.data) : 0;
 
-    counter += leftCounter > rightCounter ? leftCounter : rightCounter;
-
-    return counter + 1;
+    return Math.max(leftCounter, rightCounter) + 1;
   }
 
   depth(value) {
