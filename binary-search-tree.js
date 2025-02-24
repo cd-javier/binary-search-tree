@@ -75,59 +75,35 @@ export default class Tree {
     return root;
   }
 
-  deleteItem(value) {
-    const target = this.find(value);
-    const targetParent = this.findParent(value);
+  deleteItem(value, root = this.root) {
+    if (root === null) return root;
 
-    if (!target) return false;
+    if (value < root.data) {
+      root.left = this.deleteItem(value, root.left);
+    } else if (value > root.data) {
+      root.right = this.deleteItem(value, root.right);
+    } else {
+      if (root.left === null) return root.right;
+      if (root.right === null) return root.left;
 
-    // Helper function
-    const replaceNodeInParent = (parent, oldNode, newNode) => {
-      if (parent) {
-        if (parent.left === oldNode) parent.left = newNode;
-        else if (parent.right === oldNode) parent.right = newNode;
-      } else {
-        this.root = newNode;
+      let successor = root.right;
+      while (successor && successor.left) {
+        successor = successor.left;
       }
-    };
-
-    // Case 1: The deleted node is a leaf
-    if (!target.left && !target.right) {
-      // That node is now null
-      replaceNodeInParent(targetParent, target, null);
-      return true;
+      root.data = successor.data;
+      root.right = this.deleteItem(successor.data, root.right);
     }
-
-    // Case 2: The deleted node only has one child
-    // The node is replaced by that child
-    if (target.left && !target.right) {
-      replaceNodeInParent(targetParent, target, target.left);
-      return true;
-    } else if (!target.left && target.right) {
-      replaceNodeInParent(targetParent, target, target.right);
-      return true;
-    }
-
-    // Case 3: The deleted node has two children
-    let replacement = target.right;
-    // Find the in-order successor
-    while (replacement.left) {
-      replacement = replacement.left;
-    }
-    // Delete the replacement
-    this.deleteItem(replacement.data);
-    // Make the value of the deleted node the same as the deleted replacement
-    target.data = replacement.data;
-    return true;
+    return root;
   }
 
   find(value, root = this.root) {
     if (!root) return null;
+
     if (value === root.data) return root;
-    if (value < root.data)
-      return root.left ? this.find(value, root.left) : null;
-    if (value > root.data)
-      return root.right ? this.find(value, root.right) : null;
+
+    return value < root.data
+      ? this.find(value, root.left)
+      : this.find(value, root.right);
   }
 
   findParent(value, root = this.root) {
