@@ -36,4 +36,24 @@ export default class Tree {
 
     return root;
   }
+
+  insert(value, root = this.root) {
+    if (value === root.data) return null;
+
+    const newNode = new Node(value);
+
+    if (value < root.data) {
+      if (root.left) {
+        this.insert(value, root.left);
+      } else {
+        root.left = newNode;
+      }
+    } else if (value > root.data) {
+      if (root.right) {
+        this.insert(value, root.right);
+      } else {
+        root.right = newNode;
+      }
+    }
+  }
 }
