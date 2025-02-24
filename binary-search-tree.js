@@ -97,40 +97,46 @@ export default class Tree {
     const target = this.find(value);
     const targetParent = this.findParent(value);
 
-    if (!value || !target) return null;
+    if (!target) return false;
 
-    // If the deleted node is a leaf
-    // That node is now null
+    // Helper function
+    const replaceNodeInParent = (parent, oldNode, newNode) => {
+      if (parent) {
+        if (parent.left === oldNode) parent.left = newNode;
+        else if (parent.right === oldNode) parent.right = newNode;
+      } else {
+        this.root = newNode;
+      }
+    };
+
+    // Case 1: The deleted node is a leaf
     if (!target.left && !target.right) {
-      if (targetParent.left === target) targetParent.left = null;
-      if (targetParent.right === target) targetParent.right = null;
-      return;
+      // That node is now null
+      replaceNodeInParent(targetParent, target, null);
+      return true;
     }
 
-    // If the deleted node only has one child
+    // Case 2: The deleted node only has one child
     // The node is replaced by that child
     if (target.left && !target.right) {
-      if (targetParent.left === target) targetParent.left = target.left;
-      if (targetParent.right === target) targetParent.right = target.left;
-      return;
+      replaceNodeInParent(targetParent, target, target.left);
+      return true;
     } else if (!target.left && target.right) {
-      if (targetParent.left === target) targetParent.left = target.right;
-      if (targetParent.right === target) targetParent.right = target.right;
-      return;
+      replaceNodeInParent(targetParent, target, target.right);
+      return true;
     }
 
-    // If the deleted node has two children
-    // We find a replacement - the next higher number
+    // Case 3: The deleted node has two children
     let replacement = target.right;
+    // Find the in-order successor
     while (replacement.left) {
       replacement = replacement.left;
     }
-
     // Delete the replacement
     this.deleteItem(replacement.data);
-
     // Make the value of the deleted node the same as the deleted replacement
     target.data = replacement.data;
+    return true;
   }
 
   find(value, root = this.root) {
