@@ -218,6 +218,7 @@ export default class Tree {
   }
 
   depth(value) {
+    if (!this.find(value)) return null;
     let target = value;
     let counter = 0;
 
@@ -231,9 +232,11 @@ export default class Tree {
 
   isBalanced() {
     const difference =
-      this.height(this.root.left.data) - this.height(this.root.right.data);
+      this.height(this.root.left) - this.height(this.root.right);
 
-    return difference > 1 || difference < -1 ? false : true;
+    console.log(difference);
+
+    return difference <= 1 && difference >= -1;
   }
 
   rebalance() {
