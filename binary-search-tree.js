@@ -135,30 +135,30 @@ export default class Tree {
 
   inOrder(callback, root = this.root) {
     if (!callback) throw new Error('Callback function needed');
-    if (!this.root) return;
+    if (!root) return;
 
-    if (root.left) this.inOrder(callback, root.left);
+    this.inOrder(callback, root.left);
     callback(root.data);
-    if (root.right) this.inOrder(callback, root.right);
+    this.inOrder(callback, root.right);
     return;
   }
 
   preOrder(callback, root = this.root) {
     if (!callback) throw new Error('Callback function needed');
-    if (!this.root) return;
+    if (!root) return;
 
     callback(root.data);
-    if (root.left) this.preOrder(callback, root.left);
-    if (root.right) this.preOrder(callback, root.right);
+    this.preOrder(callback, root.left);
+    this.preOrder(callback, root.right);
     return;
   }
 
   postOrder(callback, root = this.root) {
     if (!callback) throw new Error('Callback function needed');
-    if (!this.root) return;
+    if (!root) return;
 
-    if (root.left) this.postOrder(callback, root.left);
-    if (root.right) this.postOrder(callback, root.right);
+    this.postOrder(callback, root.left);
+    this.postOrder(callback, root.right);
     callback(root.data);
     return;
   }
