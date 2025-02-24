@@ -14,6 +14,7 @@ export default class Tree {
   }
 
   sort(arr) {
+    if (!arr || arr.length === 0) return [];
     // remove duplicates
     const result = [];
 
@@ -26,6 +27,7 @@ export default class Tree {
   }
 
   buildTree(arr, start = 0, end = arr.length - 1) {
+    if (!arr || arr.length === 0) return null;
     if (start > end) return null;
     const midIndex = Math.floor((end + start) / 2);
 
