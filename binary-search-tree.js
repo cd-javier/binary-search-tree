@@ -156,4 +156,31 @@ export default class Tree {
     callback(root.data);
     return;
   }
+
+  height(value) {
+    const target = typeof value === 'object' ? value : this.find(value);
+    let counter = 0;
+
+    if (!target) return;
+    if (!target.left && !target.right) return counter;
+
+    const leftCounter = target.left ? this.height(target.left.data) : 0;
+    const rightCounter = target.right ? this.height(target.right.data) : 0;
+
+    counter += leftCounter > rightCounter ? leftCounter : rightCounter;
+
+    return counter + 1;
+  }
+
+  depth(value) {
+    let target = value;
+    let counter = 0;
+
+    while (this.findParent(target)) {
+      counter++;
+      target = this.findParent(target).data;
+    }
+
+    return counter;
+  }
 }
