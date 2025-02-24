@@ -57,21 +57,38 @@ export default class Tree {
   }
 
   insert(value, root = this.root) {
-    if (value === root.data) return null;
+    // If no value is provided
+    if (value === null || value === undefined) {
+      throw new Error('Cannot insert null or undefined into the tree');
+    }
 
     const newNode = new Node(value);
 
+    // If the tree is empty
+    if (this.root === null) {
+      this.root = newNode;
+      return true;
+    }
+
+    // If the value already exists in the tree
+    if (value === root.data) {
+      return false;
+    }
+
+    // Recursive method for inserting the value into the tree
     if (value < root.data) {
       if (root.left) {
         this.insert(value, root.left);
       } else {
         root.left = newNode;
+        return true;
       }
-    } else if (value > root.data) {
+    } else {
       if (root.right) {
         this.insert(value, root.right);
       } else {
         root.right = newNode;
+        return true;
       }
     }
   }
