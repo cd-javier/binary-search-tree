@@ -140,7 +140,7 @@ export default class Tree {
   }
 
   find(value, root = this.root) {
-    if (!root) return null
+    if (!root) return null;
     if (value === root.data) return root;
     if (value < root.data)
       return root.left ? this.find(value, root.left) : null;
@@ -149,7 +149,7 @@ export default class Tree {
   }
 
   findParent(value, root = this.root) {
-    if (!root) return null
+    if (!root) return null;
     if (
       (root.left && root.left.data === value) ||
       (root.right && root.right.data === value)
@@ -163,6 +163,7 @@ export default class Tree {
 
   levelOrder(callback) {
     if (!callback) throw new Error('Callback function needed');
+    if (!this.root) return;
 
     const queue = [this.root];
 
@@ -176,6 +177,7 @@ export default class Tree {
 
   inOrder(callback, root = this.root) {
     if (!callback) throw new Error('Callback function needed');
+    if (!this.root) return;
 
     if (root.left) this.inOrder(callback, root.left);
     callback(root.data);
@@ -185,6 +187,7 @@ export default class Tree {
 
   preOrder(callback, root = this.root) {
     if (!callback) throw new Error('Callback function needed');
+    if (!this.root) return;
 
     callback(root.data);
     if (root.left) this.preOrder(callback, root.left);
@@ -194,6 +197,7 @@ export default class Tree {
 
   postOrder(callback, root = this.root) {
     if (!callback) throw new Error('Callback function needed');
+    if (!this.root) return;
 
     if (root.left) this.postOrder(callback, root.left);
     if (root.right) this.postOrder(callback, root.right);
