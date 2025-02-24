@@ -207,4 +207,11 @@ export default class Tree {
 
     return difference > 1 || difference < -1 ? false : true;
   }
+
+  rebalance() {
+    const arr = [];
+    this.inOrder((elm) => arr.push(elm));
+
+    this.root = this.buildTree(arr);
+  }
 }
