@@ -37,6 +37,23 @@ export default class Tree {
     return root;
   }
 
+  prettyPrint(node = this.root, prefix = '', isLeft = true) {
+    if (node === null) {
+      return;
+    }
+    if (node.right !== null) {
+      this.prettyPrint(
+        node.right,
+        `${prefix}${isLeft ? '│   ' : '    '}`,
+        false
+      );
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    if (node.left !== null) {
+      this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+  }
+
   insert(value, root = this.root) {
     if (value === root.data) return null;
 
@@ -184,20 +201,10 @@ export default class Tree {
     return counter;
   }
 
-  prettyPrint(node = this.root, prefix = '', isLeft = true) {
-    if (node === null) {
-      return;
-    }
-    if (node.right !== null) {
-      this.prettyPrint(
-        node.right,
-        `${prefix}${isLeft ? '│   ' : '    '}`,
-        false
-      );
-    }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-    if (node.left !== null) {
-      this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-    }
+  isBalanced() {
+    const difference =
+      this.height(this.root.left.data) - this.height(this.root.right.data);
+
+    return difference > 1 || difference < -1 ? false : true;
   }
 }
