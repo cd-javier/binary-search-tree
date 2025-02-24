@@ -62,35 +62,17 @@ export default class Tree {
       throw new Error('Cannot insert null or undefined into the tree');
     }
 
-    const newNode = new Node(value);
+    if (root === null) return new Node(value);
 
-    // If the tree is empty
-    if (this.root === null) {
-      this.root = newNode;
-      return true;
-    }
+    if (value === root.data) return root;
 
-    // If the value already exists in the tree
-    if (value === root.data) {
-      return false;
-    }
-
-    // Recursive method for inserting the value into the tree
     if (value < root.data) {
-      if (root.left) {
-        this.insert(value, root.left);
-      } else {
-        root.left = newNode;
-        return true;
-      }
-    } else {
-      if (root.right) {
-        this.insert(value, root.right);
-      } else {
-        root.right = newNode;
-        return true;
-      }
+      root.left = this.insert(value, root.left);
+    } else if (value > root.data) {
+      root.right = this.insert(value, root.right);
     }
+
+    return root;
   }
 
   deleteItem(value) {
