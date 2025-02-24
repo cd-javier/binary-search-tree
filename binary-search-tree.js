@@ -116,4 +116,17 @@ export default class Tree {
     if (value > root.data)
       return root.right ? this.findParent(value, root.right) : null;
   }
+
+  levelOrder(callback) {
+    if (!callback) throw new Error('Callback function needed');
+
+    const queue = [this.root];
+
+    while (queue.length > 0) {
+      const item = queue[0];
+      if (item.left) queue.push(item.left);
+      if (item.right) queue.push(item.right);
+      callback(queue.shift().data);
+    }
+  }
 }
